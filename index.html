@@ -660,6 +660,67 @@
     .schedule-table td { padding: 10px 12px; font-size: 0.88rem; }
     .hero-badge { font-size: 0.75rem; }
   }
+/* ── 照片輪播 ── */
+.slideshow-wrap {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  overflow: hidden;
+  background: var(--tan);
+}
+
+.slideshow {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 60%;
+  filter: sepia(15%) saturate(90%);
+  opacity: 0;
+  transition: opacity 1.2s ease-in-out;
+}
+
+.slide.active {
+  opacity: 1;
+}
+
+/* 底部小圓點 */
+.slide-dots {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 2;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.45);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.dot.active {
+  background: white;
+  transform: scale(1.3);
+}
+
+@media (max-width: 640px) {
+  .slideshow-wrap { height: 260px; }
+}
+
+
 </style>
 </head>
 <body>
@@ -688,12 +749,17 @@
   </div>
 </section>
 
-<!-- ── 照片 ── -->
-<div class="photo-strip">
-  <img src="images/photo1.jpg" alt="成大榕園">
-  <img src="images/photo2.jpg" alt="成大環工系館">
-  <img src="images/photo3.jpg" alt="成大工學大道">
+<!-- ── 照片輪播 ── -->
+<div class="slideshow-wrap">
+  <div class="slideshow">
+    <img src="images/photo1.jpg" class="slide active" alt="">
+    <img src="images/photo2.jpg" class="slide" alt="">
+    <img src="images/photo3.jpg" class="slide" alt="">
+    <img src="images/photo4.jpg" class="slide" alt="">
+    <img src="images/photo5.jpg" class="slide" alt="">
   </div>
+  <div class="slide-dots" id="slideDots"></div>
+</div>
 
 <!-- ── 活動說明 ── -->
 <section class="info-section">
@@ -1266,6 +1332,36 @@ function showToast(msg) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 4000);
 }
+
+// ── 照片輪播 ──
+(function () {
+  const slides = document.querySelectorAll('.slide');
+  const dotsEl = document.getElementById('slideDots');
+  if (!slides.length) return;
+
+  let cur = 0;
+
+  // 建立圓點
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(n) {
+    slides[cur].classList.remove('active');
+    dotsEl.children[cur].classList.remove('active');
+    cur = n;
+    slides[cur].classList.add('active');
+    dotsEl.children[cur].classList.add('active');
+  }
+
+  // 每 2 秒自動切換
+  setInterval(() => goTo((cur + 1) % slides.length), 2000);
+})();
+
+
 </script>
 </body>
 </html>
