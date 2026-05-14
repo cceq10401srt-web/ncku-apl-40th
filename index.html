@@ -4,10 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>成大空氣污染研究室/空氣資源研究室 40 周年聚會</title>
+<!-- ① Open Graph：LINE / FB 分享預覽 -->
+<meta property="og:type"        content="website">
+<meta property="og:url"         content="https://cceq10401srt-web.github.io/ncku-apl-40th/">
+<meta property="og:title"       content="成大空污室／空資室 40 周年聚會">
+<meta property="og:description" content="115年8月1日（六）・成大成功校區環工系系館・誠邀各位夥伴重返系館，重憶當年研究室的點點滴滴">
+<meta property="og:image"       content="https://cceq10401srt-web.github.io/ncku-apl-40th/images/photo1.jpg">
+<meta property="og:image:width"  content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale"      content="zh_TW">
+
+<!-- ② Favicon：瀏覽器分頁小圖示 -->
+<link rel="icon" type="image/svg+xml"
+  href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
   :root {
     --cream: #fdf8f1;
@@ -156,19 +169,7 @@
   }
   .cta-btn:hover { background: var(--brown); transform: translateY(-1px); }
 
-  /* ── PHOTO STRIP ── */
-  .photo-strip {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr 1.5fr;
-    height: 280px;
-    overflow: hidden;
-  }
-  .photo-strip img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: sepia(15%) saturate(90%);
-  }
+ 
 
   /* ── SECTIONS ── */
   section {
@@ -651,7 +652,6 @@
 
   /* ── RWD ── */
   @media (max-width: 640px) {
-    .photo-strip { height: 160px; grid-template-columns: 1fr 1fr 1fr; }
     .info-grid { grid-template-columns: 1fr; }
     .form-row { grid-template-columns: 1fr; }
     .photo-types { grid-template-columns: 1fr; }
@@ -659,6 +659,13 @@
     .schedule-table .time-cell { width: auto; font-size: 0.85rem; }
     .schedule-table td { padding: 10px 12px; font-size: 0.88rem; }
     .hero-badge { font-size: 0.75rem; }
+  /* ③ 防止 iOS 自動縮放輸入框 */
+   .form-field input,
+   .form-field select,
+   .form-field textarea {font-size: 16px;
+  }
+  
+  
   }
 /* ── 照片輪播 ── */
 .slideshow-wrap {
