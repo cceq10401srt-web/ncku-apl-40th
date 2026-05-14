@@ -671,7 +671,8 @@
 .slideshow-wrap {
   position: relative;
   width: 100%;
-  height: 420px;
+  height: 60vh;       /* ← 改成螢幕高度60%，電腦高、手機低 */
+  max-height: 600px;  /* ← 最高不超過600px */
   overflow: hidden;
   background: var(--tan);
 }
@@ -687,8 +688,8 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center 60%;
+  object-fit: cover; 
+  object-position: center center;   /* ← 改成正中央顯示 */
   filter: sepia(15%) saturate(90%);
   opacity: 0;
   transition: opacity 1.2s ease-in-out;
@@ -724,7 +725,7 @@
 }
 
 @media (max-width: 640px) {
-  .slideshow-wrap { height: 260px; }
+  .slideshow-wrap { height: 55vw; }    /* ← 改成手機寬度的55% */
 }
 
 
