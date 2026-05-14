@@ -129,6 +129,19 @@
     letter-spacing: 0.08em;
   }
 
+  .hero-tagline {
+  font-family: 'Noto Serif TC', serif;
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-weight: 500;
+  color: var(--brown);
+  letter-spacing: 0.2em;
+  margin-bottom: 16px;
+  border: 1px solid var(--brown-light);
+  display: inline-block;
+  padding: 8px 28px;
+  border-radius: 2px;
+}
+
   .hero-info {
     display: flex;
     flex-wrap: wrap;
@@ -650,8 +663,24 @@
   }
   .field-error.show { display: block; }
 
+  /* ── PHOTO STRIP ── */
+.photo-strip {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;  /* ← 改成4欄 */
+  overflow: hidden;                          /* ← 刪除固定height，改用下方方式 */
+}
+.photo-strip img {
+  width: 100%;
+  aspect-ratio: 4 / 3;    /* ← 用比例決定高度，不裁切 */
+  object-fit: cover;
+  filter: sepia(15%) saturate(90%);
+}
+
+
+
   /* ── RWD ── */
   @media (max-width: 640px) {
+    .photo-strip { grid-template-columns: 1fr 1fr; }
     .info-grid { grid-template-columns: 1fr; }
     .form-row { grid-template-columns: 1fr; }
     .photo-types { grid-template-columns: 1fr; }
@@ -667,87 +696,6 @@
   
   
   }
-/* ── 照片輪播 ── */
-.slideshow-wrap {
-  position: relative;
-  width: 100%;
-  height: 60vh;
-  max-height: 600px;
-  overflow: hidden;
-  background: var(--tan);
-}
-
-.slideshow {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-/* 每一格 slide 是 div */
-.slide {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 1.2s ease-in-out;
-  overflow: hidden;
-}
-
-.slide.active { opacity: 1; }
-
-/* 模糊背景：延伸填滿兩側空白 */
-.slide::before {
-  content: '';
-  position: absolute;
-  inset: -30px;
-  background: var(--bg) center / cover no-repeat;
-  filter: blur(22px);
-  transform: scale(1.1);
-  z-index: 0;
-  opacity: 0.5;
-}
-
-/* 主圖片：完整顯示不裁切 */
-.slide img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center center;
-  filter: sepia(15%) saturate(90%);
-  z-index: 1;
-}
-
-
-/* 底部小圓點 */
-.slide-dots {
-  position: absolute;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 10px;
-  z-index: 2;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.45);
-  cursor: pointer;
-  transition: background 0.3s, transform 0.3s;
-}
-
-.dot.active {
-  background: white;
-  transform: scale(1.3);
-}
-
-@media (max-width: 640px) {
-  .slideshow-wrap { height: 55vw; }    /* ← 改成手機寬度的55% */
-}
-
 
 </style>
 </head>
@@ -759,6 +707,7 @@
   <div class="hero-content">
     <div class="hero-badge">成功大學 · 1986 — 2026</div>
     <h1>成功大學<br>空氣污染研究室/空氣資源研究室<br><span>四十周年聚會</span></h1>
+    <p class="hero-tagline">光影40　緣濃情馨</p> 
     <p class="hero-subtitle">誠邀各位夥伴重返系館 重憶當年研究室的點點滴滴</p>
     <div class="hero-info">
       <div class="hero-info-item">
@@ -777,27 +726,13 @@
   </div>
 </section>
 
-<!-- ── 照片輪播 ── -->
-<div class="slideshow-wrap">
-  <div class="slideshow">
-    <div class="slide active" style="--bg:url('images/photo1.jpg')">
-        <img src="images/photo1.jpg" alt="">
-      </div>
-      <div class="slide" style="--bg:url('images/photo2.jpg')">
-        <img src="images/photo2.jpg" alt="">
-      </div>
-      <div class="slide" style="--bg:url('images/photo3.jpg')">
-        <img src="images/photo3.jpg" alt="">
-      </div>
-      <div class="slide" style="--bg:url('images/photo4.jpg')">
-        <img src="images/photo4.jpg" alt="">
-      </div>
-      <div class="slide" style="--bg:url('images/photo5.jpg')">
-        <img src="images/photo5.jpg" alt="">
-      </div>
-    </div>         
-  <div class="slide-dots" id="slideDots"></div>
-</div>            
+<!-- ── 照片 ── -->
+<div class="photo-strip">
+  <img src="images/photo1.jpg" alt="">
+  <img src="images/photo2.jpg" alt="">
+  <img src="images/photo3.jpg" alt="">
+  <img src="images/photo4.jpg" alt="">
+</div>          
 
 <!-- ── 活動說明 ── -->
 <section class="info-section">
@@ -882,8 +817,15 @@
     <h2 class="section-title">報名表單</h2>
 
     <div class="form-notice">
-      📝 <strong>請所有夥伴填寫</strong>，無論是否出席均需填寫基本資料，以利活動籌備統計。<br>
-      （出席者費用：空污室伙伴每位 <strong>1,000 元</strong>，眷屬免費，活動當日繳交）
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <div>
+          📝 <strong>請所有夥伴填寫</strong>，無論是否出席均需填寫基本資料，以利活動籌備統計。<br>
+          （出席者費用：空污室伙伴每位 <strong>1,000 元</strong>，眷屬免費，活動當日繳交）
+        </div>
+        <div style="border:2px solid var(--terra); border-radius:4px; padding:8px 16px; white-space:nowrap; font-weight:700; color:var(--terra); font-size:0.95rem;">
+          第一輪報名截止日期：5月31日
+        </div>
+      </div>
     </div>
 
     <form id="regForm" novalidate>
@@ -1370,35 +1312,6 @@ function showToast(msg) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 4000);
 }
-
-// ── 照片輪播 ──
-(function () {
-  const slides = document.querySelectorAll('.slide');
-  const dotsEl = document.getElementById('slideDots');
-  if (!slides.length) return;
-
-  let cur = 0;
-
-  // 建立圓點
-  slides.forEach((_, i) => {
-    const d = document.createElement('div');
-    d.className = 'dot' + (i === 0 ? ' active' : '');
-    d.addEventListener('click', () => goTo(i));
-    dotsEl.appendChild(d);
-  });
-
-  function goTo(n) {
-    slides[cur].classList.remove('active');
-    dotsEl.children[cur].classList.remove('active');
-    cur = n;
-    slides[cur].classList.add('active');
-    dotsEl.children[cur].classList.add('active');
-  }
-
-  // 每 2 秒自動切換
-  setInterval(() => goTo((cur + 1) % slides.length), 3500);
-})();
-
 
 </script>
 </body>
