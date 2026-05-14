@@ -671,8 +671,8 @@
 .slideshow-wrap {
   position: relative;
   width: 100%;
-  height: 60vh;       /* ← 改成螢幕高度60%，電腦高、手機低 */
-  max-height: 600px;  /* ← 最高不超過600px */
+  height: 60vh;
+  max-height: 600px;
   overflow: hidden;
   background: var(--tan);
 }
@@ -683,21 +683,41 @@
   height: 100%;
 }
 
+/* 每一格 slide 是 div */
 .slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.2s ease-in-out;
+  overflow: hidden;
+}
+
+.slide.active { opacity: 1; }
+
+/* 模糊背景：延伸填滿兩側空白 */
+.slide::before {
+  content: '';
+  position: absolute;
+  inset: -30px;
+  background: var(--bg) center / cover no-repeat;
+  filter: blur(22px);
+  transform: scale(1.1);
+  z-index: 0;
+  opacity: 0.5;
+}
+
+/* 主圖片：完整顯示不裁切 */
+.slide img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; 
-  object-position: center center;   /* ← 改成正中央顯示 */
+  object-fit: contain;
+  object-position: center center;
   filter: sepia(15%) saturate(90%);
-  opacity: 0;
-  transition: opacity 1.2s ease-in-out;
+  z-index: 1;
 }
 
-.slide.active {
-  opacity: 1;
-}
 
 /* 底部小圓點 */
 .slide-dots {
@@ -760,14 +780,24 @@
 <!-- ── 照片輪播 ── -->
 <div class="slideshow-wrap">
   <div class="slideshow">
-    <img src="images/photo1.jpg" class="slide active" alt="">
-    <img src="images/photo2.jpg" class="slide" alt="">
-    <img src="images/photo3.jpg" class="slide" alt="">
-    <img src="images/photo4.jpg" class="slide" alt="">
-    <img src="images/photo5.jpg" class="slide" alt="">
-  </div>
+    <div class="slide active" style="--bg:url('images/photo1.jpg')">
+        <img src="images/photo1.jpg" alt="">
+      </div>
+      <div class="slide" style="--bg:url('images/photo2.jpg')">
+        <img src="images/photo2.jpg" alt="">
+      </div>
+      <div class="slide" style="--bg:url('images/photo3.jpg')">
+        <img src="images/photo3.jpg" alt="">
+      </div>
+      <div class="slide" style="--bg:url('images/photo4.jpg')">
+        <img src="images/photo4.jpg" alt="">
+      </div>
+      <div class="slide" style="--bg:url('images/photo5.jpg')">
+        <img src="images/photo5.jpg" alt="">
+      </div>
+    </div>         
   <div class="slide-dots" id="slideDots"></div>
-</div>
+</div>            
 
 <!-- ── 活動說明 ── -->
 <section class="info-section">
